@@ -76,4 +76,18 @@ ON NC_County_Rental.RegionID = NC_SFH_County_Month.RegionID
 ORDER BY NC_SFH_County_Month.SizeRank
 Limit 13
 
--- By glancing at some of this data we can see that there ar many NULL points of data.  It looks like Zillow was not collecting Single Family Home data for some of these counties until some point in 2005 and it looks.  That doesn't matter so much since we are only interested in the last 5 years.  It is a bit hard to comb through all of this data though having so many columns-  there is a column for 
+-- By glancing at some of this data we can see that there ar many NULL points of data.  It looks like Zillow was not collecting Single Family Home data for some of these counties until some point in 2005 and it looks.  That doesn't matter so much since we are only interested in the last 5 years.  It is a bit hard to comb through all of this data though having so many columns-  there is a column for rental/more prices for every month for over 20 years in some cases.  To eliminate the unnessecary data we are actually going to delete these columns by going to the Database stucture tab in the DB Browser for SQLite to delete the unecessary data.  We only want to keep the months from 08/2021 through 07/2023 so we can have 5 years worth of data for each table.  There is another way to DROP specific columns that you don't need, and now that we have gotten rid of the months, let's 'drop' a redundant column.  It looks like the values for State and StateName are exactly the same, and since we are now limited to NC data, let's drop the Statename column from the tables.
+
+ALTER TABLE NC_County_Rental
+DROP COLUMN StateName
+
+SELECT * 
+FROM NC_County_Rental
+
+--  It looks like we dropped the StateName column successfully.  Let's do the other table now.
+
+ALTER TABLE NC_SFH_County_Month
+DROP COLUMN StateName
+
+SELECT * 
+FROM NC_SFH_County_Month
