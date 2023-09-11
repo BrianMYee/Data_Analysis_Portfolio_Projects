@@ -76,7 +76,7 @@ ON NC_County_Rental.RegionID = NC_SFH_County_Month.RegionID
 ORDER BY NC_SFH_County_Month.SizeRank
 Limit 13
 
--- By glancing at some of this data we can see that there ar many NULL points of data.  It looks like Zillow was not collecting Single Family Home data for some of these counties until some point in 2005 and it looks.  That doesn't matter so much since we are only interested in the last 5 years.  It is a bit hard to comb through all of this data though having so many columns-  there is a column for rental/more prices for every month for over 20 years in some cases.  To eliminate the unnessecary data we are actually going to delete these columns by going to the Database stucture tab in the DB Browser for SQLite to delete the unecessary data.  We only want to keep the months from 08/2021 through 07/2023 so we can have 5 years worth of data for each table.  There is another way to DROP specific columns that you don't need, and now that we have gotten rid of the months, let's 'drop' a redundant column.  It looks like the values for State and StateName are exactly the same, and since we are now limited to NC data, let's drop the Statename column from the tables.
+-- By glancing at some of this data we can see that there ar many NULL points of data.  It looks like Zillow was not collecting Single Family Home data for some of these counties until some point in 2005 and it looks.  That doesn't matter so much since we are only interested in the last 5 years.  It is a bit hard to comb through all of this data though having so many columns-  there is a column for rental/more prices for every month for over 20 years in some cases.  To eliminate the unnecessary data we are actually going to delete these columns by going to the Database stucture tab in the DB Browser for SQLite to delete the unecessary data.  We only want to keep the months from 08/2021 through 07/2023 so we can have 5 years worth of data for each table.  There is another way to DROP specific columns that you don't need, and now that we have gotten rid of the months, let's 'drop' a redundant column.  It looks like the values for State and StateName are exactly the same, and since we are now limited to NC data, let's drop the Statename column from the tables.
 
 ALTER TABLE NC_County_Rental
 DROP COLUMN StateName
@@ -91,3 +91,49 @@ DROP COLUMN StateName
 
 SELECT * 
 FROM NC_SFH_County_Month
+
+-- We got rid of the extra months and the redundant column we didn't need through 2 different methods.  Let's also limit the rows needed to just the 13 counties we want to compare.  First let's verify the number of counties in each table.
+
+SELECT COUNT(SizeRank)
+FROM NC_SFH_County_Month
+
+--As we stated earlier, there are 100 counties and it looks like Zillow does collect data for all of these counties for Single Family Homes, so our output of 100 makes sense.  We can delete the bottom 87 counties since we no longer need them.  I am going to run the same code, but first as a SELECT statement to see what we will be deleting, and then as a DELETE statement to make it final.
+
+SELECT *
+FROM NC_SFH_County_Month
+WHERE State = 'NC'
+ORDER BY SizeRank DESC
+LIMIT 87
+
+--  Ok, data looks good.  None of our core counties are included-  let's proceed to deleting it.  You need to alter the statement a bit to SELECT which counties to delete.  We can see if we run the SizeRank query that Onslow County (The smallest and last county in our list) has a size ranking of 338.  We can create a statement whereby all counties with a SizeRank greater than 338 will be deleted.
+
+DELETE 
+FROM NC_SFH_County_Month
+WHERE SizeRank > '338'
+
+--  Our NC_SFH_County_Month Table now only contains the 13 counties we want.  Let's do the same for the Rental table now.
+
+SELECT *
+FROM NC_County_Rental
+WHERE SizeRank > '338'
+-- These are not the counties we want, let's proceed to DELETE.
+
+DELETE 
+FROM NC_County_Rental
+Where SizeRank > '338'
+
+-- Now let's verify our Data.
+
+SELECT *
+FROM NC_County_Rental;
+
+SELECT * 
+FROM NC_SFH_County_Month;
+
+--Data looks much better!
+
+
+
+
+
+
