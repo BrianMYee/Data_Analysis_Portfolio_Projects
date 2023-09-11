@@ -1,4 +1,4 @@
-/* For this Data Analysis we will be using Data pulled from Zillow to compare Housing Prices in the state of North Carolina over the last 10 years by County.  We will also be looing at Rental prices and comparing the two.
+/* For this Data Analysis we will be using Data pulled from Zillow to compare Housing Prices in the state of North Carolina over the last 5 years by County.  We will also be looing at Rental prices and comparing the two.
 
 I will be pulling the ZHVI Single-Family Homes Time Series ($) file by County from the Home Values section as well at the ZORI (Smoothed): All Homes Plus MultiFamily Time Series ($) by County from the Rentals section.
 
