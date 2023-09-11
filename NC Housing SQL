@@ -75,3 +75,5 @@ INNER JOIN NC_SFH_County_Month
 ON NC_County_Rental.RegionID = NC_SFH_County_Month.RegionID
 ORDER BY NC_SFH_County_Month.SizeRank
 Limit 13
+
+-- By glancing at some of this data we can see that there ar many NULL points of data.  It looks like Zillow was not collecting Single Family Home data for some of these counties until some point in 2005 and it looks.  That doesn't matter so much since we are only interested in the last 5 years.  It is a bit hard to comb through all of this data though having so many columns-  there is a column for 
