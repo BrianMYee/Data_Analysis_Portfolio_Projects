@@ -58,18 +58,13 @@ WHERE StateName = 'NC'
 ORDER BY SizeRank ASC
 LIMIT 10
 
--- So the counties match according to the data in the SizeRank column.  Good news since we can at least compare the largest counties with each other from the two datasets.  I am curious to push this data to the top 12 counties since I currently live in the one that appears 13th in the SizeRank column. 
+-- So the counties match according to the data in the SizeRank column.  Good news since we can at least compare the largest counties with each other from the two datasets.  I am curious to push this data to the top 13 counties since I currently live in the one that appears 13th in the SizeRank column. We can use an INNER JOIN to see this data.
 
-SELECT *
+SELECT NC_County_Rental.RegionName, NC_SFH_County_Month.RegionName
 FROM NC_County_Rental
-WHERE StateName = 'NC'
-ORDER BY SizeRank ASC
-LIMIT 13
-
-SELECT *
-FROM NC_SFH_County_Month
-WHERE StateName = 'NC'
-ORDER BY SizeRank ASC
-LIMIT 13
+INNER JOIN NC_SFH_County_Month
+ON NC_County_Rental.RegionID = NC_SFH_County_Month.RegionID
+ORDER BY NC_SFH_County_Month.SizeRank
+Limit 13
 
 -- It looks like the Top 13 counties also match on both datasets which is good for our later analysis.
