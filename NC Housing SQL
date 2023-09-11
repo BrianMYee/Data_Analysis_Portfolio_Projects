@@ -1,1 +1,75 @@
+/* For this Data Analysis we will be using Data pulled from Zillow to compare Housing Prices in the state of North Carolina over the last 10 years by County.  We will also be looing at Rental prices and comparing the two.
 
+I will be pulling the ZHVI Single-Family Homes Time Series ($) file by County from the Home Values section as well at the ZORI (Smoothed): All Homes Plus MultiFamily Time Series ($) by County from the Rentals section.
+
+This data is located here: https://www.zillow.com/research/data/
+
+I will be using SQLite on the DB Browser
+*/
+
+--Name Tables NC_SFH_County_Month and NC_County_Rental
+*/ First let's explore the data a bit */
+
+SELECT *
+FROM NC_SFH_County_Month
+WHERE Statename <> 'NC'
+
+-- We have a lot of Data that we can ignore for out NC only Analysis.  Let's change that to a Delete statement and remove this data.
+
+DELETE 
+FROM NC_SFH_County_Month
+WHERE Statename <> 'NC'
+
+-- We should be left with only the NC Data (NC has 100 Counties, so you should be left with 100 rows of data.)
+
+SELECT *
+FROM NC_SFH_County_Month
+
+--  Now let's follow the same process for the Rental information
+
+SELECT *
+FROM NC_County_Rental
+WHERE Statename <> 'NC'
+
+-- As before there is a lot of non NC data we can remove
+
+DELETE
+FROM NC_County_Rental
+WHERE Statename <> 'NC'
+
+-- The non NC data should be gone now
+
+SELECT *
+FROM NC_County_Rental
+
+-- Only NC Data remains, but it looks like we have many less rows in this data.  That's odd-  maybe Zillow does not track as many counties for Rental data as they do for single family homes.To be sure, let's check the raw data and count the counties selected-  3079(Single Family Homes) vs 1068(Rentals). So we have confiremd that the Datasets do not match regarding counties-  Maybe we should narrow our datasets to select counties since we cannot compare statewide data.  Let's check the top 10 counties from each dataset and see if the match.  We will use the 'SizeRank' column to select the most populous counties from each.
+
+SELECT *
+FROM NC_County_Rental
+WHERE StateName = 'NC'
+ORDER BY SizeRank ASC
+LIMIT 10
+
+-- The Top 10 counties  Wake, Mecklenburg, Guilford, Forsyth, Cumberland, Durham, Buncombe, Union, Gaston, and New Hanover counties according to the Rental (NC_County_Rental) data.  Let's check the Single Family Home data (NC_SFH_County_Month) to see if they match.
+
+SELECT *
+FROM NC_SFH_County_Month
+WHERE StateName = 'NC'
+ORDER BY SizeRank ASC
+LIMIT 10
+
+-- So the counties match according to the data in the SizeRank column.  Good news since we can at least compare the largest counties with each other from the two datasets.  I am curious to push this data to the top 12 counties since I currently live in the one that appears 13th in the SizeRank column. 
+
+SELECT *
+FROM NC_County_Rental
+WHERE StateName = 'NC'
+ORDER BY SizeRank ASC
+LIMIT 13
+
+SELECT *
+FROM NC_SFH_County_Month
+WHERE StateName = 'NC'
+ORDER BY SizeRank ASC
+LIMIT 13
+
+-- It looks like the Top 13 counties also match on both datasets which is good for our later analysis.
