@@ -42,9 +42,5 @@ WHERE Statename <> 'NC'
 SELECT *
 FROM NC_County_Rental
 
--- Only NC Data remains, but it looks like we have many less rows in this data.  
--- That's odd-  maybe Zillow does not track as many counties for Rental data as they do for single family homes.
--- To be sure, let's check the raw data and count the counties selected-  3079 vs 1068.
--- So we have confiremd that the Datasets do not match regarding counties-  
--- Maybe we should narrow our datasets to select counties since we cannot compare statewide data.
+-- Only NC Data remains, but it looks like we have many less rows in this data.  That's odd-  maybe Zillow does not track as many counties for Rental data as they do for single family homes.To be sure, let's check the raw data and count the counties selected-  3079(Single Family Homes) vs 1068(Rentals). So we have confiremd that the Datasets do not match regarding counties-  Maybe we should narrow our datasets to select counties since we cannot compare statewide data.  Let's
 
