@@ -42,5 +42,35 @@ WHERE Statename <> 'NC'
 SELECT *
 FROM NC_County_Rental
 
--- Only NC Data remains, but it looks like we have many less rows in this data.  That's odd-  maybe Zillow does not track as many counties for Rental data as they do for single family homes.To be sure, let's check the raw data and count the counties selected-  3079(Single Family Homes) vs 1068(Rentals). So we have confiremd that the Datasets do not match regarding counties-  Maybe we should narrow our datasets to select counties since we cannot compare statewide data.  Let's
+-- Only NC Data remains, but it looks like we have many less rows in this data.  That's odd-  maybe Zillow does not track as many counties for Rental data as they do for single family homes.To be sure, let's check the raw data and count the counties selected-  3079(Single Family Homes) vs 1068(Rentals). So we have confiremd that the Datasets do not match regarding counties-  Maybe we should narrow our datasets to select counties since we cannot compare statewide data.  Let's check the top 10 counties from each dataset and see if the match.  We will use the 'SizeRank' column to select the most populous counties from each.
+
+SELECT *
+FROM NC_County_Rental
+WHERE StateName = 'NC'
+ORDER BY SizeRank ASC
+LIMIT 10
+
+-- The Top 10 counties  Wake, Mecklenburg, Guilford, Forsyth, Cumberland, Durham, Buncombe, Union, Gaston, and New Hanover counties according to the Rental (NC_County_Rental) data.  Let's check the Single Family Home data (NC_SFH_County_Month) to see if they match.
+
+SELECT *
+FROM NC_SFH_County_Month
+WHERE StateName = 'NC'
+ORDER BY SizeRank ASC
+LIMIT 10
+
+-- So the counties match according to the data in the SizeRank column.  Good news since we can at least compare the largest counties with each other from the two datasets.  I am curious to push this data to the top 12 counties since I currently live in the one that appears 13th in the SizeRank column. 
+
+SELECT *
+FROM NC_County_Rental
+WHERE StateName = 'NC'
+ORDER BY SizeRank ASC
+LIMIT 13
+
+SELECT *
+FROM NC_SFH_County_Month
+WHERE StateName = 'NC'
+ORDER BY SizeRank ASC
+LIMIT 13
+
+-- It looks like the Top 13 counties also match on both datasets which is good for our later analysis.
 
