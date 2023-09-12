@@ -130,8 +130,17 @@ FROM NC_County_Rental;
 SELECT * 
 FROM NC_SFH_County_Month;
 
---Data looks much better!
+--Data looks much better! At this point though there may be an obstacle you can run into with the data as it currently exists.  Let's try to compute an AVG value of one of the rental or home value columns and see what happens.  Let's use the home value since the result will be more obvious.
 
+SELECT AVG (2023-07-31)
+FROM NC_SFH_County_Month
+
+--  Hmmmm..... The output tells us that the average single family home in our selected 13 counties in July 2023 is only $1985!!!  That can't be, but our code looks right and returned no errors.  What could be going on here?  If he take the column name for the month we used- it is written as a math expression might be written "2023-7-31".  So what would 2023-38(the 7 plus the 31) be in math? It would be 1985.  The column name can be written appended with the backtick symbol ` as such '2023-07-31` and now the SQL code will read it as a column name and not as a math expression.  Let's try.
+
+SELECT AVG (`2023-07-31`)
+FROM NC_SFH_County_Month
+
+--  Output = $352,235.37(I manually rounded, but you can ROUND in SQL as well!) That looks more accurate for an average Single Family Home value.
 
 
 
